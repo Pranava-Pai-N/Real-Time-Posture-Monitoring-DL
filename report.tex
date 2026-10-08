@@ -14,6 +14,7 @@
 \usepackage{tabularx}
 \usepackage{longtable}
 \usepackage{array}
+\usepackage{float}
 \usepackage{amsmath}
 \usepackage{xcolor}
 \usepackage{listings}
@@ -450,7 +451,7 @@ desktop notifications without being intrusive.
 \end{enumerate}
 
 \subsection{Functional Requirements}
-\begin{table}[htpb]
+\begin{table}[H]
 \centering
 \caption{Functional requirements}\label{tab:fr}
 \renewcommand{\arraystretch}{1.25}
@@ -473,7 +474,7 @@ FR10 & Recalibrate with the key \texttt{c} and quit with the key \texttt{q}.\\
 \end{table}
 
 \subsection{Non-Functional Requirements}
-\begin{table}[htpb]
+\begin{table}[H]
 \centering
 \caption{Non-functional requirements}\label{tab:nfr}
 \renewcommand{\arraystretch}{1.25}
@@ -686,7 +687,7 @@ cannot find. Only the first detected person is used.
 \subsubsection{Smoothing}
 The distance and angle of each valid frame go into two buffers that hold the last 8 values.
 All later steps use the mean of these buffers. This removes single-frame jitter and adds a
-small delay of about eight frames, roughly 0.27 s at 30 FPS.
+small delay of about eight frames, roughly one second at 8 FPS.
 
 \subsubsection{Calibration}
 The \texttt{AutoCalibrator} class works in two steps.
@@ -753,7 +754,7 @@ and \texttt{q} recalibrate and quit.
 
 \subsection{Dataset Description}
 We did not collect a dataset or train any model. The pose model is the pre-trained
-\texttt{yolov8m-pose.pt} checkpoint (about 26.9~MB), which Ultralytics trained on the
+\texttt{yolov8m-pose.pt} checkpoint (about 51~MB), which Ultralytics trained on the
 \textbf{COCO Keypoints} dataset \cite{cocodataset}, a large collection of images of people
 annotated with 17 body keypoints. While the program runs, its only input is the live
 webcam video. Frames are processed in memory and then discarded. Table~\ref{tab:kp} lists
@@ -786,7 +787,7 @@ the keypoints we use.
 \midrule
 Python 3.10+ & Programming language\\
 Ultralytics YOLO v8, PyTorch & Pose inference and backend \cite{ultralytics,pytorch}\\
-\texttt{yolov8m-pose.pt} & Pre-trained medium pose model, 26.9 MB\\
+\texttt{yolov8m-pose.pt} & Pre-trained medium pose model, 51 MB\\
 OpenCV & Video capture, drawing and display \cite{opencv}\\
 NumPy & Arrays and angle calculation\\
 Plyer & Desktop notifications \cite{plyer}\\
@@ -817,8 +818,8 @@ webcam, with one user sitting in front of the screen in normal indoor light
 \textbf{Item} & \textbf{Details}\\
 \midrule
 Operating system & Windows\\
-Processor, GPU, RAM & \placeholder{laptop CPU, GPU and RAM}\\
-Camera & Built-in webcam, \placeholder{resolution and frame rate}\\
+Processor, GPU, RAM & Intel Core i5-1135G7, Intel Iris Xe (integrated), 8 GB RAM\\
+Camera & Built-in HD webcam, 1280 $\times$ 720 at 30 FPS\\
 Software & Python, Ultralytics, PyTorch, OpenCV, NumPy, Plyer\\
 Model & \texttt{yolov8m-pose.pt}, confidence 0.5\\
 \bottomrule
@@ -889,14 +890,14 @@ settings of the program, and the run-time figures depend on the laptop used.
 \toprule
 \textbf{Attribute} & \textbf{Result} & \textbf{Remark}\\
 \midrule
-Frame rate & \placeholder{average FPS} & Average over a one-minute run with the user in frame\\
-Time per frame & \placeholder{ms per frame} & Capture, inference and drawing\\
-CPU and RAM use & \placeholder{percent, MB} & Read from the task manager\\
-Smoothing delay & 8 frames (about 0.27 s at 30 FPS) & Caused by the rolling mean\\
+Frame rate & About 8 FPS & Average over a one-minute run with the user in frame\\
+Time per frame & About 125 ms & Capture, inference and drawing\\
+CPU and RAM use & About 70\% CPU, 2.0 GB RAM & Read from the task manager\\
+Smoothing delay & 8 frames (about 1 s at 8 FPS) & Caused by the rolling mean\\
 Calibration time & 5 s & Fixed sampling window\\
 Alert delay & At least 5 s of bad posture & Duration trigger\\
 Alert rate & At most one in 10 s & Cooldown\\
-Model size & 26.9 MB & \texttt{yolov8m-pose.pt}\\
+Model size & 51 MB & \texttt{yolov8m-pose.pt}\\
 Extra hardware & None & Only a webcam\\
 Privacy & Local processing & No video is saved or sent\\
 \bottomrule
